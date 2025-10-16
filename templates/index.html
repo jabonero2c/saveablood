@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SaveABlood - Login/Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Welcome to SaveABlood</h1>
+
+    <form action="{{ url_for('login') }}" method="POST">
+        <h2>Login</h2>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="submit" value="Login">
+    </form>
+
+    <form id="register" action="{{ url_for('register') }}" method="POST">
+        <h2>Register</h2>
+        <input type="text" name="new_username" placeholder="Username" required>
+        <input type="password" name="new_password" placeholder="Password" required>
+        <input type="text" name="blood_type" placeholder="Blood Type" required>
+        <input type="text" name="location" placeholder="Location" required>
+        <select name="role">
+            <option value="donor">Donor</option>
+            <option value="recipient">Recipient</option>
+        </select>
+        <input type="submit" value="Register">
+    </form>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>

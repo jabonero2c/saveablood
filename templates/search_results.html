@@ -1,0 +1,22 @@
+
+{% extends "base.html" %}
+
+{% block body %}
+    <h1>Search for Blood Donors</h1>
+    <form action="{{ url_for('search') }}" method="POST">
+        <input type="text" name="blood_type" placeholder="Blood Type" required>
+        <input type="text" name="location" placeholder="Location" required>
+        <input type="submit" value="Search">
+    </form>
+
+    {% if donors %}
+        <h2>Available Donors</h2>
+        <ul>
+            {% for donor in donors %}
+                <li>{{ donor.username }} ({{ donor.blood_type }}) - {{ donor.location }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No donors found.</p>
+    {% endif %}
+{% endblock %}

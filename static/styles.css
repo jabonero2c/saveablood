@@ -31,7 +31,7 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #45a049;
 }
-/* ----- Homepage Styling ----- */
+
 .hero {
     background: linear-gradient(to right, #e63946, #f1faee);
     color: #fff;
@@ -121,7 +121,7 @@ footer {
     padding: 20px;
     margin-top: 50px;
 }
-/* ----- Homepage Styling ----- */
+
 .hero {
     background: linear-gradient(to right, #e63946, #f1faee);
     color: #fff;
@@ -211,7 +211,7 @@ footer {
     padding: 20px;
     margin-top: 50px;
 }
-/* ----- Homepage (Standalone) ----- */
+
 body.homepage {
     margin: 0;
     font-family: Arial, sans-serif;

@@ -3,26 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
-# -------------------------------------
-# Configuration
-# -------------------------------------
 class Config:
     SECRET_KEY = os.urandom(24)
     SQLALCHEMY_DATABASE_URI = "sqlite:///saveablood.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
-# -------------------------------------
-# Flask Initialization
-# -------------------------------------
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 
 
-# -------------------------------------
-# Database Models
-# -------------------------------------
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
@@ -54,9 +45,7 @@ class BloodRequest(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
-# -------------------------------------
-# Routes
-# -------------------------------------
+
 @app.route('/')
 def home():
     """First page (public home with flash animation)."""
@@ -170,9 +159,6 @@ def search():
     return render_template('search_results.html')
 
 
-# -------------------------------------
-# Run App
-# -------------------------------------
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

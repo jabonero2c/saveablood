@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block body %}
+<header class="dashboard-header">
+<h2>Inventory at: {{ bank.name }}</h2>
+<nav>
+<a href="{{ url_for('blood_banks') }}" class="btn btn-secondary">Back to Directory</a>
+</nav>
+</header>
+
+<div class="container dashboard-grid">
+    <!-- Inventory Display (Left) -->
+    <div class="sidebar">
+        <div class="card">
+            <h3 class="section-title">Current Stock Levels (Units)</h3>
+            <p><strong>Location:</strong> {{ bank.location }}</p>
+
+            <div class="inventory-grid">
+                {% for type, count in inventory.items() %}
+                    <div class="inventory-item {% if count < 5 %}low-stock{% endif %}">
+                        <div class="inventory-type">{{ type }}</div>
+                        <div class="inventory-count">{{ count }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                <span style="color: var(--color-primary); font-weight: bold;">Note:</span> Inventory is updated instantly upon successful donation or request. Items below 5 units are highlighted.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Request Form (Right) -->
+    <div class="main-content">
+        <div class="card">
+            <h3 class="section-title">Place Blood Request</h3>
+            <p>You are requesting blood from <strong>{{ bank.name }}</strong> (Bank ID: {{ bank.id }}). </p>
+
+            <form action="{{ url_for('request_blood') }}" method="POST">
+                <input type="hidden" name="blood_bank_id" value="{{ bank.id }}">
+
+                <label for="blood_type_needed" style="font-weight: bold;">Blood Type Needed:</label>
+                <select name="blood_type_needed" id="blood_type_needed" required>
+                    <option value="">-- Select Required Type --</option>
+                    {% for type in blood_types %}
+                        <option value="{{ type }}">{{ type }}</option>
+                    {% endfor %}
+                </select>
+                
+                <input type="submit" value="Submit Request" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

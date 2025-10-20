@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block body %}
+<header class="dashboard-header">
+<h2>Donor Dashboard: Welcome, {{ user.username }} ({{ user.blood_type }})</h2>
+<nav>
+<a href="{{ url_for('logout') }}" class="btn btn-primary">Logout</a>
+</nav>
+</header>
+
+<div class="container dashboard-grid">
+    <!-- Sidebar for Donor Actions (Left) -->
+    <div class="sidebar">
+        <div class="card">
+            <h3 class="section-title">Post a Donation</h3>
+            <p>Record your donation and specify the blood bank you supported. Your blood type: <strong>{{ user.blood_type }}</strong></p>
+            <form action="{{ url_for('post_donation') }}" method="POST">
+                <textarea name="content" placeholder="Share a message or note about your donation experience (e.g., 'Just donated a unit today!')" required></textarea>
+                
+                <label for="blood_bank_id" style="font-weight: bold;">Select Blood Bank:</label>
+                <select name="blood_bank_id" id="blood_bank_id" required>
+                    <option value="">-- Choose Bank --</option>
+                    {% for bank in all_banks %}
+                        <option value="{{ bank.id }}">{{ bank.name }} ({{ bank.location }})</option>
+                    {% endfor %}
+                </select>
+                
+                <input type="submit" value="Record Donation" class="btn btn-success">
+            </form>
+        </div>
+
+        {% if banks_nearby %}
+        <div class="card">
+            <h3 class="section-title">Blood Banks Near You ({{ user.location }})</h3>
+            {% for bank in banks_nearby %}
+                <div class="list-item" style="display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; border-radius: 8px;">
+                    <div>
+                        <strong>{{ bank.name }}</strong>
+                        <p style="margin: 0; font-size: 0.9em;">Location: {{ bank.location }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Main Content (Right) -->
+    <div class="main-content">
+        <div class="card">
+            <h3 class="section-title">Your Donation History</h3>
+            {% if posts %}
+                {% for post in posts %}
+                    <div class="list-item">
+                        <p><strong>{{ post.content }}</strong></p>
+                        <small>Donated to: {{ post.blood_bank.name }} | {{ post.blood_bank.location }}</small>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You haven't recorded any donations yet. Be a hero!</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

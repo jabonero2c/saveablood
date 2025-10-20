@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block body %}
+<header class="dashboard-header">
+<h2>Recipient Dashboard: Welcome, {{ user.username }} (Needs: {{ user.blood_type }})</h2>
+<nav>
+<a href="{{ url_for('logout') }}" class="btn btn-primary">Logout</a>
+</nav>
+</header>
+
+<div class="container dashboard-grid">
+    <!-- Sidebar for Recipient Actions (Left) -->
+    <div class="sidebar">
+        <div class="card">
+            <h3 class="section-title">Find Blood Banks</h3>
+            <p>Check the inventory of local blood banks before placing a request.</p>
+            <a href="{{ url_for('blood_banks') }}" class="btn btn-secondary" style="width: 100%;">View Blood Bank Directory</a>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title">Your Blood Requests</h3>
+            {% if requests %}
+                {% for req in requests %}
+                    <div class="list-item">
+                        <p style="margin-bottom: 5px;"><strong>{{ req.blood_type_needed }}</strong> needed at <strong>{{ req.target_bank.name }}</strong></p>
+                        {% if req.is_fulfilled %}
+                            <span class="status-fulfilled">Status: Fulfilled Immediately</span>
+                        {% else %}
+                            <span class="status-pending">Status: Pending / Low Stock</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You have no active or historical blood requests.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Main Content (Right) -->
+    <div class="main-content">
+        <div class="card">
+            <h3 class="section-title">How to Get Blood</h3>
+            <p>As a recipient, your primary action is to check the available blood supply at a local bank and then place a request.</p>
+            <ol style="margin: 15px 0 0 20px; line-height: 1.6;">
+                <li><strong>Browse Banks:</strong> Click the 'View Blood Bank Directory' button.</li>
+                <li><strong>Check Inventory:</strong> Select a blood bank to see its current stock of all blood types.</li>
+                <li><strong>Request:</strong> If stock is available, use the form on the inventory page to place an official request.</li>
+                <li><strong>Status:</strong> If the bank has stock, your request will be marked as "Fulfilled Immediately" and the stock will be reduced. Otherwise, it will be marked "Pending".</li>
+            </ol>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--color-primary);">
+            <h3 class="section-title" style="border-bottom: none;">Important Note on Inventory</h3>
+            <p>The inventory shown is a real-time snapshot. When you submit a request, the system attempts to fulfill it immediately by reducing the bank's stock. If stock is zero, the request is logged but cannot be fulfilled by the system.</p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
